@@ -266,13 +266,17 @@ class MainActivity : AppCompatActivity() {
         if (isConnected) {
             connectedThread.cancel()
             isConnected = false
-            updateUI(false)
+            updateUI(false) // Bluetooth disconnected
         }
     }
 
     private fun updateUI(connected: Boolean) {
         if (connected) {
-            tvStatus.visibility = View.GONE
+            // Bluetooth connected
+            tvStatus.text = "Bluetooth Connected"
+            tvStatus.setTextColor(resources.getColor(R.color.colorConnected)) // Optional: set color when connected
+            tvStatus.visibility = View.VISIBLE
+
             tvConnectedDevice.visibility = View.VISIBLE
             tvReceivedData.visibility = View.VISIBLE
             tvData.visibility = View.VISIBLE
@@ -281,6 +285,7 @@ class MainActivity : AppCompatActivity() {
             btnDisconnect.visibility = View.VISIBLE
             tvAvailableDevices.visibility = View.GONE
             deviceList.visibility = View.GONE
+
             if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.BLUETOOTH_CONNECT
@@ -297,7 +302,11 @@ class MainActivity : AppCompatActivity() {
             }
             tvConnectedDevice.text = "Connected to: ${connectedDevice?.name}"
         } else {
+            // Bluetooth disconnected
+            tvStatus.text = "Bluetooth Disconnected"
+            tvStatus.setTextColor(resources.getColor(R.color.colorDisconnected)) // Optional: set color when disconnected
             tvStatus.visibility = View.VISIBLE
+
             tvConnectedDevice.visibility = View.GONE
             tvReceivedData.visibility = View.GONE
             tvData.visibility = View.GONE
@@ -306,10 +315,9 @@ class MainActivity : AppCompatActivity() {
             btnDisconnect.visibility = View.GONE
             tvAvailableDevices.visibility = View.VISIBLE
             deviceList.visibility = View.VISIBLE
-            tvStatus.text = "Scanning for devices..."
-            tvData.text = ""
         }
     }
+
 
     class ConnectedThread(private val mmSocket: BluetoothSocket) : Thread() {
         private val mmInStream: InputStream = mmSocket.inputStream
@@ -409,7 +417,7 @@ class MainActivity : AppCompatActivity() {
                     socket.connect()
                     handler.post {
                         isConnected = true
-                        updateUI(true)
+                        updateUI(true)  // Bluetooth connected
                     }
                     connectedThread = ConnectedThread(socket)
                     connectedThread.start()
@@ -434,11 +442,5 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
     }
-
 }
-
-

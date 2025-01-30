@@ -5,28 +5,50 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Bluetooth Status Text -->
     <TextView
         android:id="@+id/tvStatus"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Scanning for devices..."
-        android:textStyle="bold" />
+        android:text="Bluetooth Disconnected"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="visible"/>
 
+    <!-- Connected Device Info -->
     <TextView
         android:id="@+id/tvConnectedDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Connected to: "
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
+    <!-- Available Devices Section -->
+    <TextView
+        android:id="@+id/tvAvailableDevices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Available Devices:"
+        android:textStyle="bold"/>
+
+    <ListView
+        android:id="@+id/lvDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Message Section -->
     <TextView
         android:id="@+id/tvReceivedData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Received Data:"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tvData"
@@ -35,7 +57,7 @@
         android:layout_marginTop="10dp"
         android:fontFamily="monospace"
         android:textSize="16sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <EditText
         android:id="@+id/etMessage"
@@ -43,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="Message to send"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btnSend"
@@ -51,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Send Message"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btnDisconnect"
@@ -59,20 +81,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Disconnect"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tvAvailableDevices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Available Devices:"
-        android:textStyle="bold" />
-
-    <ListView
-        android:id="@+id/lvDevices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
-
+        android:visibility="gone"/>
 </LinearLayout>
