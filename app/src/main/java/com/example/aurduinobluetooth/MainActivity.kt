@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvStatus: TextView
     private lateinit var tvConnectedDevice: TextView
     private lateinit var tvReceivedData: TextView
-    private lateinit var tvData: TextView
+    public lateinit var tvData: TextView
     private lateinit var etMessage: EditText
     private lateinit var btnSend: Button
     private lateinit var btnDisconnect: Button
@@ -250,7 +250,7 @@ class MainActivity : AppCompatActivity() {
     private fun connectToDevice() {
         if (connectedDevice == null) return
 
-        connectThread = ConnectThread(connectedDevice!!)
+        connectThread = ConnectThread(connectedDevice!!, tvData)
         connectThread.start()
     }
 
@@ -319,24 +319,22 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    class ConnectedThread(private val mmSocket: BluetoothSocket) : Thread() {
+    class ConnectedThread(private val mmSocket: BluetoothSocket, private val tvData: TextView) : Thread() {
         private val mmInStream: InputStream = mmSocket.inputStream
         private val mmOutStream: OutputStream = mmSocket.outputStream
         private val mmBuffer: ByteArray = ByteArray(1024)
         val handler = Handler(Looper.getMainLooper())
 
-
-
-
         override fun run() {
             var numBytes: Int
-
             while (true) {
                 try {
                     numBytes = mmInStream.read(mmBuffer)
                     val readMsg = String(mmBuffer, 0, numBytes)
+
+                    // Update the TextView with the received data
                     handler.post {
-                        // myviewModel(readMsg)
+                        tvData.text = readMsg  // Display the received data in the tvData TextView
                     }
                 } catch (e: IOException) {
                     break
@@ -349,7 +347,7 @@ class MainActivity : AppCompatActivity() {
                 mmOutStream.write(bytes)
             } catch (e: IOException) {
                 handler.post {
-//                Toast.makeText(this, "Error sending message", Toast.LENGTH_SHORT).show()
+                    // Handle error (optional)
                 }
             }
         }
@@ -361,10 +359,10 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-
     }
+
     @SuppressLint("MissingPermission")
-    inner class ConnectThread(device: BluetoothDevice) : Thread() {
+    inner class ConnectThread(private val device: BluetoothDevice, private val tvData: TextView) : Thread() {
         private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
             // Check if BLUETOOTH_CONNECT and BLUETOOTH_SCAN permissions are granted
             if (ActivityCompat.checkSelfPermission(
@@ -384,7 +382,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                 null // Return null if permissions are not granted
+                null // Return null if permissions are not granted
             } else {
                 // Permission granted, create the socket
                 device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"))
@@ -419,7 +417,7 @@ class MainActivity : AppCompatActivity() {
                         isConnected = true
                         updateUI(true)  // Bluetooth connected
                     }
-                    connectedThread = ConnectedThread(socket)
+                    connectedThread = ConnectedThread(socket, tvData)
                     connectedThread.start()
                 } catch (e: IOException) {
                     handler.post {
@@ -443,4 +441,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }
