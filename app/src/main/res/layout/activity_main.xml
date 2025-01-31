@@ -10,7 +10,7 @@
         android:id="@+id/tvStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bluetooth Disconnected"
+        android:text="@string/bluetooth_disconnected"
         android:textSize="30sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -23,8 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Connected to: "
-        android:visibility="gone"/>
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:text="@string/connected_to"
+        android:visibility="gone"
+        />
 
     <!-- Available Devices Section -->
     <TextView
@@ -32,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Available Devices:"
+        android:text="@string/available_devices"
         android:textStyle="bold"/>
 
     <ListView
@@ -47,8 +50,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Received Data:"
-        android:visibility="gone"/>
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="@string/received_data"
+        android:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/tvData"
@@ -56,30 +62,52 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="monospace"
+        android:textStyle="bold|italic"
         android:textSize="16sp"
         android:visibility="gone"/>
 
+    <!-- This view will take up the remaining space, pushing EditText to the bottom -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <!-- Horizontal Layout for buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <!-- Send Button -->
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Message"
+            android:visibility="gone"
+            />
+
+        <!-- Disconnect Button -->
+        <Button
+            android:id="@+id/btnDisconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/disconnectBT"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+    <!-- EditText positioned at the bottom of the screen -->
     <EditText
         android:id="@+id/etMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Message to send"
-        android:visibility="gone"/>
+        android:hint="@string/message_to_send"
+        android:visibility="gone"
+        />
 
-    <Button
-        android:id="@+id/btnSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Send Message"
-        android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/btnDisconnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Disconnect"
-        android:visibility="gone"/>
 </LinearLayout>
