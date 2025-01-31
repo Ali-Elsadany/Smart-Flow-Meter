@@ -129,13 +129,6 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 return
             }
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
@@ -193,6 +186,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -217,13 +211,6 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.BLUETOOTH_SCAN
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         pairedDevices = bluetoothAdapter.bondedDevices
@@ -270,6 +257,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateUI(connected: Boolean) {
         if (connected) {
             // Bluetooth connected
@@ -341,7 +329,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
         fun write(bytes: ByteArray) {
             try {
                 mmOutStream.write(bytes)
@@ -351,7 +338,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
         fun cancel() {
             try {
                 mmSocket.close()
@@ -360,7 +346,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     @SuppressLint("MissingPermission")
     inner class ConnectThread(private val device: BluetoothDevice, private val tvData: TextView) : Thread() {
         private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {

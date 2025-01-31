@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Smart Flow Meter</string>
+    <string name="powerd_by">POWERD BY</string>
+    <string name="ali_elsadany">Ali Elsadany</string>
 </resources>
