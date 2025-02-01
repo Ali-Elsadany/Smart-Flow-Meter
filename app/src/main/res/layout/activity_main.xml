@@ -56,15 +56,20 @@
         android:visibility="gone"
         />
 
-    <TextView
-        android:id="@+id/tvData"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="monospace"
-        android:textStyle="bold|italic"
-        android:textSize="16sp"
-        android:visibility="gone"/>
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tvData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textStyle="bold|italic"
+            android:textSize="13sp"
+            android:visibility="gone"/>
+    </ScrollView>
 
     <!-- This view will take up the remaining space, pushing EditText to the bottom -->
     <Space

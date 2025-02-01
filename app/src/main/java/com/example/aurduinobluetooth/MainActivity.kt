@@ -314,21 +314,48 @@ class MainActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
 
         override fun run() {
-            var numBytes: Int
+            val stringBuilder = StringBuilder() // Accumulates data
             while (true) {
                 try {
-                    numBytes = mmInStream.read(mmBuffer)
+                    // Read data from the input stream
+                    val numBytes = mmInStream.read(mmBuffer)
                     val readMsg = String(mmBuffer, 0, numBytes)
 
-                    // Update the TextView with the received data
-                    handler.post {
-                        tvData.text = readMsg  // Display the received data in the tvData TextView
+                    // Append the received data to the buffer
+                    stringBuilder.append(readMsg)
+
+                    // Split data by newline character
+                    val lines = stringBuilder.toString().split("\n")
+                    if (lines.size > 1) {
+                        // Process complete messages
+                        for (i in 0 until lines.size - 1) {
+                            val sanitizedLine = lines[i].trim() // Clean up the line
+
+                            // Check if the line is valid (non-empty)
+                            if (sanitizedLine.isNotEmpty()) {
+                                // Append the formatted line to the TextView
+                                val formattedData = """
+                            $sanitizedLine
+                            =================================
+                        """.trimIndent()
+
+                                handler.post {
+                                    tvData.append("$formattedData\n")
+                                }
+                            }
+                        }
+                        // Keep the last incomplete part in the buffer
+                        stringBuilder.clear()
+                        stringBuilder.append(lines.last())
                     }
                 } catch (e: IOException) {
                     break
                 }
             }
         }
+
+
+
         fun write(bytes: ByteArray) {
             try {
                 mmOutStream.write(bytes)
@@ -338,6 +365,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
         fun cancel() {
             try {
                 mmSocket.close()
@@ -346,6 +374,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     @SuppressLint("MissingPermission")
     inner class ConnectThread(private val device: BluetoothDevice, private val tvData: TextView) : Thread() {
         private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
